@@ -6,14 +6,14 @@ import com.velo.route.domain.Route;
 
 @Service
 public class RouteService {
-    private final RoutingProvider routingProvider;
+    private final RouteProvider routeProvider;
 
-    public RouteService(RoutingProvider routingProvider){
-        this.routingProvider = routingProvider;
+    public RouteService(RouteProvider routeProvider){
+        this.routeProvider = routeProvider;
     }
 
-    public Route getRoute(double from, double to){
-        Route route = routingProvider.calculateRoute(from, to);
+    public Route getRoute(String from, String to){
+        Route route = routeProvider.calculateRoute(from, to);
         return route;
     }
 }
