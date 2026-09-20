@@ -20,7 +20,7 @@ public class RouteController {
     }
 
     @GetMapping("/route")
-    public ResponseEntity<RouteDTO> getRoute(@RequestParam double from, @RequestParam  double to){
+    public ResponseEntity<RouteDTO> getRoute(@RequestParam String from, @RequestParam  String to){
         RouteDTO route = routeMapper.toDTO(routeService.getRoute(from,to));
         return ResponseEntity.ok(route);
     }
