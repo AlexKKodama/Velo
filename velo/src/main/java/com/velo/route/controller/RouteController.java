@@ -1,11 +1,12 @@
 package com.velo.route.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.velo.route.dto.RouteDTO;
+import com.velo.route.dto.RouteRequest;
 import com.velo.route.mapper.RouteMapper;
 import com.velo.route.service.RouteService;
 
@@ -19,9 +20,9 @@ public class RouteController {
         this.routeMapper = routeMapper;
     }
 
-    @GetMapping("/route")
-    public ResponseEntity<RouteDTO> getRoute(@RequestParam String from, @RequestParam  String to){
-        RouteDTO route = routeMapper.toDTO(routeService.getRoute(from,to));
+    @PostMapping("/route")
+    public ResponseEntity<RouteDTO> getRoute(@RequestBody RouteRequest request){
+        RouteDTO route = routeMapper.toDTO(routeService.getRoute(request.from(), request.to()));
         return ResponseEntity.ok(route);
     }
 }

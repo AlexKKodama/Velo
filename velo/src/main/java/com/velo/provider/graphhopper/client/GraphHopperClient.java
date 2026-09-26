@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
 import com.velo.provider.graphhopper.dto.GraphHopperResponse;
+import com.velo.route.domain.Coordinate;
 
 @Component
 public class GraphHopperClient {
@@ -15,7 +16,7 @@ public class GraphHopperClient {
     public GraphHopperClient(
             RestClient graphHopperRestClient,
             @Value("${graphhopper.api-key}") String apiKey,
-            @Value("${graphhopper.profile:car}") String defaultProfile) {
+            @Value("${graphhopper.profile}") String defaultProfile) {
 
         this.restClient = graphHopperRestClient;
         this.apiKey = apiKey;
@@ -23,18 +24,22 @@ public class GraphHopperClient {
     }
 
     public GraphHopperResponse fetchRoute(
-            String from,
-            String to) {
+            Coordinate from,
+            Coordinate to) {
 
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
                     .path("/route")
-                    .queryParam("point", from)
-                    .queryParam("point", to)
+                    .queryParam("point", formatPoint(from))
+                    .queryParam("point", formatPoint(to))
                     .queryParam("profile", defaultProfile)
                     .queryParam("key", apiKey)
                     .build())
                 .retrieve()
                 .body(GraphHopperResponse.class);
+    }
+
+    private String formatPoint(Coordinate coordinate){
+        return coordinate.lat() + "," + coordinate.lon();
     }
 }

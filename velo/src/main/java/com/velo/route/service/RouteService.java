@@ -2,6 +2,7 @@ package com.velo.route.service;
 
 import org.springframework.stereotype.Service;
 
+import com.velo.route.domain.Coordinate;
 import com.velo.route.domain.Route;
 
 @Service
@@ -12,7 +13,7 @@ public class RouteService {
         this.routeProvider = routeProvider;
     }
 
-    public Route getRoute(String from, String to){
+    public Route getRoute(Coordinate from, Coordinate to){
         Route route = routeProvider.calculateRoute(from, to);
         return route;
     }
