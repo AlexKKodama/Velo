@@ -66,6 +66,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 urlTemplate: '',
                 userAgentPackageName: 'com.velo.app',
               ),
+              Positioned(
+                top: 50,
+                left: 16,
+                right: 16,
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Where to?',
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         );
