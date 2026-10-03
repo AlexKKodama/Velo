@@ -1,3 +1,8 @@
 spring:
   application:
     name: velo
+
+graphhopper:
+  base-url: https://graphhopper.com/api/1
+  api-key: ${GRAPHHOPPER_API_KEY}
+  profile: bike
