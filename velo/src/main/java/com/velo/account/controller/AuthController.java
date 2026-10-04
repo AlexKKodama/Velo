@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.velo.account.dto.RegisterRequest;
 import com.velo.account.service.RegisterService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -20,7 +22,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterRequest request){
+    public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequest request){
         registerService.register(request);
 
         return ResponseEntity
