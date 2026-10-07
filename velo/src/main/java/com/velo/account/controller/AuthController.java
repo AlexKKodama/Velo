@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.velo.account.dto.LoginRequest;
+import com.velo.account.dto.LoginResponse;
 import com.velo.account.dto.RegisterRequest;
+import com.velo.account.service.LoginService;
 import com.velo.account.service.RegisterService;
 
 import jakarta.validation.Valid;
@@ -16,9 +19,13 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 public class AuthController {
     private final RegisterService registerService;
+    private final LoginService loginService;
 
-    public AuthController(RegisterService registerService){
+    public AuthController(
+        RegisterService registerService,
+        LoginService loginService){
         this.registerService = registerService;
+        this.loginService = loginService;
     }
 
     @PostMapping("/register")
@@ -28,5 +35,12 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid  @RequestBody  LoginRequest request){
+        LoginResponse response = loginService.login(request);
+
+        return ResponseEntity.ok(response);
     }
 }
