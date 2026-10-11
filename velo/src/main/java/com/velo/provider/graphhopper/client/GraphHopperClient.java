@@ -15,8 +15,8 @@ public class GraphHopperClient {
 
     public GraphHopperClient(
             RestClient graphHopperRestClient,
-            @Value("${graphhopper.api-key}") String apiKey,
-            @Value("${graphhopper.profile}") String defaultProfile) {
+            @Value("${GRAPHHOPPER_API_KEY}") String apiKey,
+            @Value("${GRAPHHOPPER_PROFILE}") String defaultProfile) {
 
         this.restClient = graphHopperRestClient;
         this.apiKey = apiKey;

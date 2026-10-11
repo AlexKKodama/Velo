@@ -1,11 +1,8 @@
 spring:
   application:
     name: velo
+  config:
+    import: optional:file:./config.yaml
 
 graphhopper:
   base-url: https://graphhopper.com/api/1
-  api-key: ${GRAPHHOPPER_API_KEY}
-  profile: bike
-
-jwt:
-  secret: ${JWT_SECRET}

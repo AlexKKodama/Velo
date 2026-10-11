@@ -17,7 +17,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
     private final SecretKey key;
 
-    public JwtService(@Value("${jwt.secret}") String secret){
+    public JwtService(@Value("${JWT_SECRET}") String secret){
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
