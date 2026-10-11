@@ -10,6 +10,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -25,6 +26,7 @@ import com.velo.account.repository.UserRepository;
 class AuthControllerTest {
     @Container
     @ServiceConnection
+    @SuppressWarnings("unused")
     static PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>(DockerImageName.parse("postgis/postgis:18-3.6").asCompatibleSubstituteFor("postgres"));
 
@@ -56,6 +58,51 @@ class AuthControllerTest {
         assertEquals("testuser", user.getUsername());
         assertEquals("user@test.com", user.getEmail());
         assertNotEquals("password", user.getHash());
+    }
+
+    @Test
+    void shouldLoginuser() throws Exception {
+        mockMvc.perform(
+            post("/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "username": "testuser2",
+                        "email": "user2@test.com",
+                        "password": "password"
+                    }
+                """)
+        )
+        .andExpect(status().isCreated());
+
+        mockMvc.perform(
+            post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "email": "user2@test.com",
+                        "password": "password"
+                    }
+                """)
+        )
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.accessToken").exists())
+        .andExpect(jsonPath("$.accessToken").isNotEmpty())
+        .andExpect(jsonPath("$.refreshToken").exists())
+        .andExpect(jsonPath("$.refreshToken").isNotEmpty());
+
+        mockMvc.perform(
+            post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "email": "user2@test.com",
+                        "password": "wrongpassword"
+                    }
+                """)
+        )
+        .andExpect(status().isUnauthorized());
+
     }
 
 }
